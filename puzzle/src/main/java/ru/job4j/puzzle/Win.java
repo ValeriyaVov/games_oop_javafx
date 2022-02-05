@@ -1,41 +1,37 @@
 package ru.job4j.puzzle;
 
-public class Win {
+ public class Win {
     public static boolean check(int[][] board) {
+    boolean rsl = false;
         for (int i = 0; i < board.length; i++) {
-            if (checkRow(board[i])) {
-                return true;
-            }
-        }
-        for (int j = 0; j < board[0].length; j++) {
-            if(checkColumn(board, j)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public static boolean checkRow(int[] row) {
-        boolean rsl = true;
-        for (int i = 0; i < row.length ; i++) {
-            if (row[i] != 1) {
-                rsl = false;
-            }
+           if (checkRow(board, i) || checkColumn(board, i)) {
+               rsl = true;
+           }
         }
         return rsl;
     }
 
+ public static boolean checkRow (int[][] board, int row) {
+     boolean rsl = true;
+     for (int column = 0; column < board[row].length; column++) {
+         if (board[row][column] != 1) {
+             rsl = false;
+             break;
+         }
+     }
+     return rsl;
+ }
 
-    public static boolean checkColumn(int[][] board, int column) {
+ public static boolean checkColumn (int[][] board, int column) {
         boolean rsl = true;
-
-        for (int i = 0; i < board.length ; i++) {
-            if (board[i][column] != 1) {
-                rsl = false;
-            }
+        for(int row = 0; row < board.length; row++) {
+         if (board[row][column] != 1) {
+             rsl = false;
+             break;
+         }
         }
         return rsl;
     }
+
 }
-
-
 
