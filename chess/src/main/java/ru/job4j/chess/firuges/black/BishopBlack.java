@@ -18,12 +18,47 @@ public class BishopBlack implements Figure {
 
     @Override
     public Cell[] way(Cell dest) {
-        throw new ImpossibleMoveException(
-                String.format("Could not way by diagonal from %s to %s", position, dest)
-        );
+        if (!isDiagonal(position, dest)) {
+            throw new ImpossibleMoveException(
+                    String.format("Could not move by diagonal from %s to %s", position, dest)
+            );
+        }
+        int size = Math.abs(dest.getX() - position.getX());
+        Cell[] steps = new Cell[Math.abs(size)];
+        int deltaX = dest.getX() - position.getX();
+        int deltaY = dest.getY() - position.getY();
+        int x = 0;
+        int y = 0;
+        for (int index = 0; index < size; index++) {
+            if (deltaX < 0 || deltaY < 0) {
+                if (deltaX > 0) {
+                    x = position().getX() + 1 + index;
+                    y = position().getY() - 1 - index;
+                } else if (deltaY > 0) {
+                    x = position().getX() - 1 - index;
+                    y = position().getY() + 1 + index;
+                } else {
+                    x = position().getX() - 1 - index;
+                    y = position().getY() - 1 - index;
+                }
+            } else {
+                x = position().getX() + 1 + index;
+                y = position().getY() + 1 + index;
+            }
+            steps[index] = Cell.findBy(x, y);
+        }
+
+        return steps;
     }
 
     public boolean isDiagonal(Cell source, Cell dest) {
+        int sX = source.getX();
+        int sY = source.getY();
+        int dX = dest.getX();
+        int dY = dest.getY();
+        if (sX + sY == dX + dY || sX - dX == sY - dY) {
+            return true;
+        }
         return false;
     }
 
